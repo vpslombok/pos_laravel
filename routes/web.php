@@ -107,6 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('/presensi', PresensiController::class);
         Route::get('/presensi', [PresensiController::class, 'index'])->name('presensi.index');
         Route::get('/presensi/edit/{id}', [PresensiController::class, 'edit'])->name('presensi.edit');
+        Route::put('/presensi/update/{id}', [PresensiController::class, 'update'])->name('presensi.update');
         Route::get('/presensi/delete/{id}', [PresensiController::class, 'delete'])->name('presensi.delete');        
 
 
