@@ -1,5 +1,10 @@
 ---
 deployment:
   tasks:
+<<<<<<< HEAD
     - export DEPLOYPATH=/home/xayjyaqu/pos_file/
     - cp -r * $DEPLOYPATH
+=======
+    - export DEPLOYPATH=/home/xayjyaqu/pos-file/
+    - cp -r * $DEPLOYPATH
+>>>>>>> fdcf9c3bb7c2dabbb5b02185f06a60309012c04a
