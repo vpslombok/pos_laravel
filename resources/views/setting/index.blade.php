@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-    Pengaturan
+Pengaturan
 @endsection
 
 @section('breadcrumb')
-    @parent
-    <li class="active">Pengaturan</li>
+@parent
+<li class="active">Pengaturan</li>
 @endsection
 
 @section('content')
@@ -41,7 +41,7 @@
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
-                     <!-- BUATKAN FORM UNTUK UBAH TIME ZONE  -->
+                    <!-- BUATKAN FORM UNTUK UBAH TIME ZONE  -->
                     <div class="form-group row">
                         <label for="timezone" class="col-lg-2 control-label">Time Zone</label>
                         <div class="col-lg-6">
@@ -59,16 +59,22 @@
                     <!-- BUATKAN FORM UNTUK UBAH TIME ZONE  -->
                     <!-- LOKASI PERUSAHAAN -->
                     <div class="form-group row">
+                        <label for="map" class="col-lg-2 control-label">Peta Lokasi</label>
+                        <div class="col-lg-6">
+                            <div id="map" style="width: 100%; height: 400px;"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label for="latitude" class="col-lg-2 control-label">Latitude</label>
                         <div class="col-lg-6">
-                            <input type="text" name="latitude" class="form-control" id="latitude" required>
+                            <input type="text" name="latitude" class="form-control" id="latitude" required readonly>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="longitude" class="col-lg-2 control-label">Longitude</label>
                         <div class="col-lg-6">
-                            <input type="text" name="longitude" class="form-control" id="longitude" required>
+                            <input type="text" name="longitude" class="form-control" id="longitude" required readonly>
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
@@ -77,8 +83,7 @@
                     <div class="form-group row">
                         <label for="path_logo" class="col-lg-2 control-label">Logo Perusahaan</label>
                         <div class="col-lg-4">
-                            <input type="file" name="path_logo" class="form-control" id="path_logo"
-                                onchange="preview('.tampil-logo', this.files[0])">
+                            <input type="file" name="path_logo" class="form-control" id="path_logo" onchange="preview('.tampil-logo', this.files[0])">
                             <span class="help-block with-errors"></span>
                             <br>
                             <div class="tampil-logo"></div>
@@ -87,8 +92,7 @@
                     <div class="form-group row">
                         <label for="path_kartu_member" class="col-lg-2 control-label">Kartu Member</label>
                         <div class="col-lg-4">
-                            <input type="file" name="path_kartu_member" class="form-control" id="path_kartu_member"
-                                onchange="preview('.tampil-kartu-member', this.files[0], 300)">
+                            <input type="file" name="path_kartu_member" class="form-control" id="path_kartu_member" onchange="preview('.tampil-kartu-member', this.files[0], 300)">
                             <span class="help-block with-errors"></span>
                             <br>
                             <div class="tampil-kartu-member"></div>
@@ -122,32 +126,120 @@
 @endsection
 
 @push('scripts')
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-    $(function () {
+    let map, marker;
+
+    function initMap() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const initialPosition = [position.coords.latitude, position.coords.longitude];
+
+                map = L.map('map').setView(initialPosition, 8);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                }).addTo(map);
+
+                marker = L.marker(initialPosition, { draggable: true }).addTo(map);
+
+                marker.on('dragend', function(e) {
+                    const position = marker.getLatLng();
+                    $('#latitude').val(position.lat);
+                    $('#longitude').val(position.lng);
+                });
+
+                $('#latitude, #longitude').on('change', function() {
+                    updateMarkerPosition();
+                });
+            }, function() {
+                // Jika tidak dapat mengambil lokasi, gunakan lokasi default
+                const initialPosition = [-6.200000, 106.816666];
+
+                map = L.map('map').setView(initialPosition, 8);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                }).addTo(map);
+
+                marker = L.marker(initialPosition, { draggable: true }).addTo(map);
+
+                marker.on('dragend', function(e) {
+                    const position = marker.getLatLng();
+                    $('#latitude').val(position.lat);
+                    $('#longitude').val(position.lng);
+                });
+
+                $('#latitude, #longitude').on('change', function() {
+                    updateMarkerPosition();
+                });
+            });
+        } else {
+            // Jika browser tidak mendukung geolocation, gunakan lokasi default
+            const initialPosition = [-6.200000, 106.816666];
+
+            map = L.map('map').setView(initialPosition, 8);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            marker = L.marker(initialPosition, { draggable: true }).addTo(map);
+
+            marker.on('dragend', function(e) {
+                const position = marker.getLatLng();
+                $('#latitude').val(position.lat);
+                $('#longitude').val(position.lng);
+            });
+
+            $('#latitude, #longitude').on('change', function() {
+                updateMarkerPosition();
+            });
+        }
+    }
+
+    function updateMarkerPosition() {
+        const lat = parseFloat($('#latitude').val());
+        const lng = parseFloat($('#longitude').val());
+        const newPosition = [lat, lng];
+
+        marker.setLatLng(newPosition);
+        map.setView(newPosition, map.getZoom());
+    }
+
+    $(document).ready(function() {
+        initMap();
+        showData();
+    });
+</script>
+
+<script>
+    $(function() {
         showData();
 
-        $('.form-setting').validator().on('submit', function (e) {
-            if (! e.preventDefault()) {
+        $('.form-setting').validator().on('submit', function(e) {
+            if (!e.preventDefault()) {
                 $.ajax({
-                    url: $('.form-setting').attr('action'),
-                    type: $('.form-setting').attr('method'),
-                    data: new FormData($('.form-setting')[0]),
-                    async: false,
-                    processData: false,
-                    contentType: false
-                })
-                .done(response => {
-                    showData();
-                    $('.alert').fadeIn();
+                        url: $('.form-setting').attr('action'),
+                        type: $('.form-setting').attr('method'),
+                        data: new FormData($('.form-setting')[0]),
+                        async: false,
+                        processData: false,
+                        contentType: false
+                    })
+                    .done(response => {
+                        showData();
+                        $('.alert').fadeIn();
 
-                    setTimeout(() => {
-                        $('.alert').fadeOut();
-                    }, 3000);
-                })
-                .fail(errors => {
-                    console.log(errors)
-                    return;
-                });
+                        setTimeout(() => {
+                            $('.alert').fadeOut();
+                        }, 3000);
+                    })
+                    .fail(errors => {
+                        console.log(errors)
+                        return;
+                    });
             }
         });
     });
@@ -164,9 +256,9 @@
                 $('[name=diskon]').val(response.diskon);
                 $('[name=tipe_nota]').val(response.tipe_nota);
                 $('title').text(response.nama_perusahaan + ' | Pengaturan');
-                
+
                 let words = response.nama_perusahaan.split(' ');
-                let word  = '';
+                let word = '';
                 words.forEach(w => {
                     word += w.charAt(0);
                 });
