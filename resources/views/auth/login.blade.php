@@ -16,20 +16,28 @@
                 <input type="text" name="nik" class="form-control" placeholder="NIK" required value="{{ old('nik') }}" autofocus>
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 @error('nik')
-                    <span class="help-block">{{ $message }}</span>
-                @else
-                <span class="help-block with-errors"></span>
+                <div class="alert alert-danger">
+                    {{ $errors->first('nik') }}
+                </div>
                 @enderror
             </div>
             <div class="form-group has-feedback @error('password') has-error @enderror">
                 <input type="password" name="password" class="form-control" placeholder="Password" required>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 @error('password')
-                    <span class="help-block">{{ $message }}</span>
+                <span class="help-block">{{ $errors->first('password') }}</span>
                 @else
-                    <span class="help-block with-errors"></span>
+                <span class="help-block with-errors"></span>
                 @enderror
             </div>
+            @if ($errors->has('presensi'))
+            <div class="alert alert-danger">
+                {{ $errors->first('presensi') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
             <div class="row">
                 <div class="col-xs-8">
                     <div class="checkbox icheck">
@@ -39,7 +47,6 @@
                     </div>
                 </div>
                 <!-- /.col -->
-               
                 <div class="col-xs-7">
                     <a href="#" class="btn btn-success btn-block btn-flat" data-toggle="modal" data-target="#qrCodeModal">Presensi QR Code</a>
                 </div>

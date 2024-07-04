@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Presensi extends Model
 {
@@ -12,10 +13,10 @@ class Presensi extends Model
     protected $table = 'presensi';
 
     protected $fillable = [
-        'user_id', 
-        'tanggal', 
-        'waktu_masuk', 
-        'waktu_keluar', 
+        'user_id',
+        'tanggal',
+        'waktu_masuk',
+        'waktu_keluar',
     ];
 
     // Relasi dengan model User

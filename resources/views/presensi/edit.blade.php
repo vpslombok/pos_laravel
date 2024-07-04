@@ -34,16 +34,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="saveButton" disabled>Save changes</button>
+                    <button type="submit" class="btn btn-primary" id="saveButton">Save changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('#editForm input').on('change', function() {
-            $('#saveButton').prop('disabled', false);
-        });
-    });
-</script>

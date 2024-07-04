@@ -34,7 +34,8 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth', 'check.presence'], function () {
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::group(['middleware' => 'level:1'], function () {
@@ -104,11 +105,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/admin', [UserAdminController::class, 'index'])->name('user.admin');
         Route::get('/admin/data', [UserAdminController::class, 'data'])->name('admin.data');
         Route::resource('/admin', UserAdminController::class);
-        Route::resource('/presensi', PresensiController::class);
         Route::get('/presensi', [PresensiController::class, 'index'])->name('presensi.index');
+        Route::get('/presensi/data', [PresensiController::class, 'data'])->name('presensi.data');
         Route::get('/presensi/edit/{id}', [PresensiController::class, 'edit'])->name('presensi.edit');
-        Route::put('/presensi/update/{id}', [PresensiController::class, 'update'])->name('presensi.update');
-        Route::get('/presensi/delete/{id}', [PresensiController::class, 'delete'])->name('presensi.delete');        
+        Route::put('/presensi/edit/{id}', [PresensiController::class, 'update'])->name('presensi.update');
+        Route::post('/presensi/edit/{id}', [PresensiController::class, 'delete'])->name('presensi.delete');
+        Route::get('/presensi/export/excel', [PresensiController::class, 'exportExcel'])->name('presensi.export_excel');
+        Route::get('/presensi/export/pdf', [PresensiController::class, 'exportPdf'])->name('presensi.export_pdf');
+
+
 
 
 

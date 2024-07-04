@@ -51,13 +51,12 @@
                 var countdownRunning = false;
 
 
-                    // Fungsi untuk memperbarui QR code setiap 30 detik
-                    function updateQRCode() {
-                        // Generate ID acak baru untuk QR code
-                        var id = generateUniqueId(20); // Misalnya menghasilkan ID sepanjang 20 karakter
-                        console.log(id);
-                        // Ubah sumber gambar QR code dengan ID baru
-                        document.getElementById('qrCodeImg').src = 'https://quickchart.io/qr?text=' + id + '&dark=050109&ecLevel=H&margin=8&size=200&centerImageUrl=' + '{{ url($setting->path_logo) }}';
+                // Fungsi untuk memperbarui QR code setiap 30 detik
+                function updateQRCode() {
+                    // Generate ID acak baru untuk QR code
+                    var id = generateUniqueId(20); // Misalnya menghasilkan ID sepanjang 20 karakter
+                    // Ubah sumber gambar QR code dengan ID baru
+                    document.getElementById('qrCodeImg').src = 'https://quickchart.io/qr?text=' + id + '&dark=050109&ecLevel=H&margin=8&size=200&centerImageUrl=https%3A%2F%2Fpos.bael.my.id%2Fimg%2Fkasir.jpg';
 
                     // Set waktu akhir hitungan mundur di localStorage
                     localStorage.setItem('qrCodeExpiry', Date.now() + 30000);
@@ -70,12 +69,7 @@
                             id: id,
                             _token: '{{ csrf_token() }}' // Include CSRF token
                         },
-                        success: function(response) {
-                            console.log(response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText);
-                        }
+                        
                     });
 
 
@@ -136,7 +130,7 @@
                 window.onload = function() {
                     var id = localStorage.getItem('qrCodeId');
                     if (id) {
-                        document.getElementById('qrCodeImg').src = 'https://quickchart.io/qr?text=' + id + '&dark=050109&ecLevel=H&margin=8&size=200&centerImageUrl=' + '{{ url($setting->path_logo) }}';
+                        document.getElementById('qrCodeImg').src = 'https://quickchart.io/qr?text=' + id + '&dark=050109&ecLevel=H&margin=8&size=200&centerImageUrl=https%3A%2F%2Fpos.bael.my.id%2Fimg%2Fkasir.jpg';
                     } else {
                         updateQRCode();
                     }

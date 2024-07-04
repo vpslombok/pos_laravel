@@ -33,7 +33,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Username / Email
+    | Username / Nik
     |--------------------------------------------------------------------------
     |
     | This value defines which model attribute should be considered as your

@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Carbon\Carbon;
+use App\Models\Presensi;
 
 class User extends Authenticatable
 {
@@ -67,5 +69,13 @@ class User extends Authenticatable
     public function presensis()
     {
         return $this->hasMany(Presensi::class);
+    }
+
+    // Metode untuk memeriksa apakah pengguna sudah melakukan presensi hari ini
+    public function hasPresensiToday()
+    {
+        return $this->presensis()->whereDate('tanggal', now()->toDateString())
+            ->whereNotNull('waktu_masuk')
+            ->exists();
     }
 }
