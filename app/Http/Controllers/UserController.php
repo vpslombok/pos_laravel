@@ -144,11 +144,11 @@ class UserController extends Controller
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
             $nama = 'logo-' . date('YmdHis') . '.' . $file->getClientOriginalExtension();
-            $file->move(storage_path('img'), $nama);
+            $file->move(public_path('/img'), $nama);
 
             // Hapus foto sebelumnya jika ada
             if ($user->foto != '/img/user.jpg') {
-                $path = storage_path('img' . $user->foto);
+                $path = public_path($user->foto);
                 if (file_exists($path)) {
                     unlink($path);
                 }
