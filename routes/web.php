@@ -16,9 +16,11 @@ use App\Http\Controllers\{
     UserController,
     UserAdminController,
     PresensiController,
-    QrCodeController
+    QrCodeController,
+    DatabaseSettingController
 };
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,6 +123,12 @@ Route::group(['middleware' => 'auth', 'check.presence'], function () {
         Route::get('/setting', [SettingController::class, 'index'])->name('setting.index');
         Route::get('/setting/first', [SettingController::class, 'show'])->name('setting.show');
         Route::post('/setting', [SettingController::class, 'update'])->name('setting.update');
+        Route::get('/database', [DatabaseSettingController::class, 'index'])->name('database.index');
+        //database migration
+        Route::get('/migrate', function () {
+            Artisan::call('migrate');
+            return redirect()->route('database.index')->with('success', 'Migration berhasil dijalankan');
+        })->name('migrate');
     });
 
     Route::group(['middleware' => 'level:1,2'], function () {
