@@ -146,7 +146,7 @@
             serverSide: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('pembelian_detail.data', $id_pembelian) }}',
+                url: `{{ route('pembelian_detail.data', $id_pembelian) }}`,
             },
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
@@ -226,7 +226,7 @@
     }
 
     function tambahProduk() {
-        $.post('{{ route('pembelian_detail.store') }}', $('.form-produk').serialize())
+        $.post(`{{ route('pembelian_detail.store') }}`, $('.form-produk').serialize())
             .done(response => {
                 $('#kode_produk').focus();
                 table.ajax.reload(() => loadForm($('#diskon').val()));

@@ -53,13 +53,13 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{ route('user.profil') }}" class="btn btn-default btn-flat">Profil</a>
+                                <a href="{{ route('user.profil') }}" class="btn btn-info btn-flat">Profil</a>
                             </div>
-                            <div class="pull-left" style="margin-left: 20px;">
-                                <a href="#" class="btn btn-default btn-flat" data-toggle="modal" data-target="#qrCodeModal">QR Code</a>
+                           <div class="pull-left" style="margin-left: 30px;">
+                                <a href="#" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#qrCodeModal">QR Code</a>
                             </div>
                             <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat" onclick="$('#logout-form').submit()">Keluar</a>
+                                <a href="#" class="btn btn-danger btn-flat" onclick="$('#logout-form').submit()">Keluar</a>
                             </div>
                         </li>
                     </ul>

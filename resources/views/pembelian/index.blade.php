@@ -52,7 +52,7 @@
             serverSide: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('pembelian.data') }}',
+                url: `{{ route('pembelian.data') }}`,
             },
             columns: [
                 {data: 'DT_RowIndex', searchable: false, sortable: false},
