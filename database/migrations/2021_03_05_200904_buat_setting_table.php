@@ -17,7 +17,7 @@ class BuatSettingTable extends Migration
             $table->increments('id_setting');
             $table->string('nama_perusahaan');
             $table->text('alamat')->nullable();
-            $table->string('time_zone')->nullable();
+            $table->string('timezone')->nullable();
             $table->string('telepon');
             $table->tinyInteger('tipe_nota');
             $table->string('path_logo');
