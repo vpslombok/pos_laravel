@@ -16,6 +16,10 @@ class AddExpiredAtToPasswordResetsTable extends Migration
         Schema::table('password_resets', function (Blueprint $table) {
             $table->timestamp('expired_at')->nullable();
         });
+        Schema::table('pembelian', function (Blueprint $table) {
+            $table->integer('total_diskon')->default(0);
+        });
+
     }
 
     /**
@@ -27,6 +31,9 @@ class AddExpiredAtToPasswordResetsTable extends Migration
     {
         Schema::table('password_resets', function (Blueprint $table) {
             $table->dropColumn('expired_at');
+        });
+        Schema::table('pembelian', function (Blueprint $table) {
+            $table->dropColumn('total_diskon');
         });
     }
 }
