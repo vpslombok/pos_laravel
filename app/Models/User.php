@@ -78,4 +78,21 @@ class User extends Authenticatable
             ->whereNotNull('waktu_masuk')
             ->exists();
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+            $tanggal = Carbon::now()->toDateString();
+            if (!Presensi::where('user_id', $user->id)->where('tanggal', $tanggal)->exists()) {
+                $presensi = new Presensi();
+                $presensi->user_id = $user->id;
+                $presensi->tanggal = $tanggal;
+                $presensi->waktu_masuk = null;
+                $presensi->waktu_keluar = null;
+                $presensi->save();
+            }
+        });
+    }
 }

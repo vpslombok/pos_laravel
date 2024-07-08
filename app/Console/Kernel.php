@@ -24,7 +24,21 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $users = \App\Models\User::all();
+            $tanggal = \Carbon\Carbon::now()->toDateString();
+
+            foreach ($users as $user) {
+                if (!\App\Models\Presensi::where('user_id', $user->id)->where('tanggal', $tanggal)->exists()) {
+                    $presensi = new \App\Models\Presensi();
+                    $presensi->user_id = $user->id;
+                    $presensi->tanggal = $tanggal;
+                    $presensi->waktu_masuk = null;
+                    $presensi->waktu_keluar = null;
+                    $presensi->save();
+                }
+            }
+        })->everyMinute(); // Jalankan setiap menit
     }
 
     /**
@@ -34,7 +48,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

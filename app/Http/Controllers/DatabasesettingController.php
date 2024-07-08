@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DatabasesettingController extends Controller
 {
     public function index()
     {
-        return view('setting.database_setting');
+        // Mengambil file backup dari direktori storage/app/
+        $backupFiles = Storage::disk('local')->files(env('APP_NAME'));
+        return view('setting.database_setting', ['backups' => $backupFiles]);
     }
 }

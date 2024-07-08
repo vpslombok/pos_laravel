@@ -11,9 +11,7 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
     {
         if (!$request->expectsJson()) {
-            return redirect()->route('login')->withErrors([
-                'password' => 'Nik atau Password Salah.',
-            ]);
+            return route('login');
         }
     }
 

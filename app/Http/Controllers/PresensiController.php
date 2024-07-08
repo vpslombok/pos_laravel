@@ -48,16 +48,16 @@ class PresensiController extends Controller
                 return Carbon::parse($presensi->tanggal)->format('d-m-Y');
             })
             ->addColumn('waktu_masuk', function ($presensi) {
-                return $presensi->waktu_masuk ? Carbon::parse($presensi->waktu_masuk)->format('H:i') : '';
+                return $presensi->waktu_masuk ? Carbon::parse($presensi->waktu_masuk)->format('H:i') : '-';
             })
             ->addColumn('waktu_keluar', function ($presensi) {
-                return $presensi->waktu_keluar ? Carbon::parse($presensi->waktu_keluar)->format('H:i') : '';
+                return $presensi->waktu_keluar ? Carbon::parse($presensi->waktu_keluar)->format('H:i') : '-';
             })
             ->addColumn('total_jam', function ($presensi) {
                 if (empty($presensi->waktu_masuk) && empty($presensi->waktu_keluar)) {
-                    return '<span style="color: yellow;">Masih Kosong</span>';
+                    return '<span style="color: red;">Belum Presensi</span>';
                 } elseif (empty($presensi->waktu_keluar)) {
-                    return '<span style="color: red;">Belum Pulang</span>';
+                    return '<span style="color: red;">Belum Presensi Pulang</span>';
                 } else {
                     $waktu_masuk = Carbon::parse($presensi->waktu_masuk);
                     $waktu_keluar = Carbon::parse($presensi->waktu_keluar);
@@ -76,6 +76,13 @@ class PresensiController extends Controller
             })
             ->rawColumns(['aksi', 'total_jam'])
             ->make(true);
+    }
+
+    public function getPresensi(Request $request)
+    {
+        $filterDari = $request->input('dari_tanggal');
+        $filterSampai = $request->input('sampai_tanggal');
+        return Presensi::where('tanggal', '>=', $filterDari)->where('tanggal', '<=', $filterSampai)->get();
     }
 
 
@@ -139,11 +146,15 @@ class PresensiController extends Controller
 
     public function exportExcel(Request $request)
     {
-        return Excel::download(new PresensiExport, 'presensi.xlsx');
+        $filterDari = $request->input('dari_tanggal');
+        $filterSampai = $request->input('sampai_tanggal');
+        return Excel::download(new PresensiExport($filterDari, $filterSampai), 'presensi.xlsx');
     }
 
     public function exportPdf(Request $request)
     {
-        return Excel::download(new PresensiExport, 'presensi.pdf');
+        $filterDari = $request->input('dari_tanggal');
+        $filterSampai = $request->input('sampai_tanggal');
+        return Excel::download(new PresensiExport($filterDari, $filterSampai), 'presensi.pdf');
     }
 }

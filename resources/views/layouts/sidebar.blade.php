@@ -39,15 +39,17 @@
                 </ul>
             </li>
             <!-- buatkan menu iventori -->
-            <li class="treeview {{ Request::is('iventori*') ? 'active' : '' }}">
+            <li class="treeview {{ Request::is('stock_opname*') ? 'active' : '' }}">
                 <a href="#">
-                    <i class="fa fa-sliders"></i> <span>Inventori</span>
+                    <i class="fa fa-sliders"></i> <span>Stock Opname</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href=""><i class="fa fa-rotate-right"></i> Iventori</a></li>
+                    <li><a href=""><i class="fa fa-rotate-right"></i>Grand</a></li>
+                    <li><a href=""><i class="fa fa-rotate-right"></i>Per Item</a></li>
+                    <li><a href=""><i class="fa fa-rotate-right"></i>Per Kategori</a></li>
                 </ul>
             </li>
             <!-- Add 'active' class to menu item if the route name matches -->
@@ -77,7 +79,7 @@
                 </ul>
             </li>
             <!-- Add 'active' class to menu item if the route name matches -->
-            <li class="treeview {{Request::is('presensi*') || Request::is('user*') || Request::is('setting*') || Request::is('admin*') ? 'active' : '' }}">
+            <li class="treeview {{Request::is('presensi*') || Request::is('user*') || Request::is('admin*') ? 'active' : '' }}">
                 <a href="#">
                     <i class="fa fa-user-circle"></i> <span>Employe</span>
                     <span class="pull-right-container">
@@ -88,7 +90,19 @@
                 <li class="{{ Request::route()->getName() == 'presensi.index' ? 'active' : '' }}"><a href="{{ route('presensi.index') }}"><i class="fa fa-table"></i>Data Presensi</a></li>
                     <li class="{{ Request::route()->getName() == 'admin.index' ? 'active' : '' }}"><a href="{{ route('admin.index') }}"><i class="fa fa-user"></i>Pengguna Admin</a></li>
                     <li class="{{ Request::route()->getName() == 'user.index' ? 'active' : '' }}"><a href="{{ route('user.index') }}"><i class="fa fa-users"></i>Karyawan</a></li>
+                </ul>
+            </li>
+            <!-- perrusahaan menu -->
+            <li class="treeview {{Request::is('setting*') || Request::is('database*') ? 'active' : '' }}">
+                <a href="#">
+                    <i class="fa fa-home"></i> <span>Menu Perusahaan</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
                     <li class="{{ Request::route()->getName() == 'setting.index' ? 'active' : '' }}"><a href="{{ route('setting.index') }}"><i class="fa fa-cog"></i>Pengaturan</a></li>
+                    <li class="{{ Request::route()->getName() == 'database.index' ? 'active' : '' }}"><a href="{{ route('database.index') }}"><i class="fa fa-database"></i>Database</a></li>
                 </ul>
             </li>
             @else

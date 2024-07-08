@@ -24,6 +24,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/presensi', [PresensiController::class, 'index']);
-Route::get('/user', [AuthController::class, 'datauser'])->middleware('auth:sanctum');
+Route::get('/users', [AuthController::class, 'datauser'])->middleware('auth:sanctum');
 
 

@@ -21,7 +21,7 @@ use App\Http\Controllers\{
 };
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-
+use Spatie\Backup\Tasks\Backup\BackupJobFactory;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -129,6 +129,10 @@ Route::group(['middleware' => 'auth', 'check.presence'], function () {
             Artisan::call('migrate');
             return redirect()->route('database.index')->with('success', 'Migration berhasil dijalankan');
         })->name('migrate');
+        Route::get('/backup', function () {
+            Artisan::call('backup:run');
+            return redirect()->route('database.index')->with('success', 'Backup berhasil dibuat');
+        })->name('backup');
     });
 
     Route::group(['middleware' => 'level:1,2'], function () {

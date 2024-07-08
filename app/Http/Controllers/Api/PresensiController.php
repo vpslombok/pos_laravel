@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Presensi;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class PresensiController extends Controller
 {
@@ -18,5 +19,11 @@ class PresensiController extends Controller
         }
 
         return response()->json($presensi);
+    }
+
+    public function datauser()
+    {
+        $user = User::all();
+        return response()->json($user);
     }
 }

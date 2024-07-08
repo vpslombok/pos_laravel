@@ -105,8 +105,6 @@ Data Presensi
             table.ajax.reload();
         }
 
-        setInterval(reloadTable, 10000); // Reload table every 10 seconds
-
         // Submit the edit form
         $('#editForm').on('submit', function(e) {
             e.preventDefault();
@@ -118,11 +116,19 @@ Data Presensi
                 success: function(response) {
                     $('#editModal').modal('hide');
                     table.ajax.reload();
-                    alert(response.message);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: response.message,
+                    });
                 },
                 error: function(errors) {
                     if (errors.responseJSON && errors.responseJSON.message) {
-                        alert(errors.responseJSON.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: errors.responseJSON.message,
+                        });
                     }
                 }
             });
@@ -130,20 +136,42 @@ Data Presensi
 
         // Delete data function
         window.deleteData = function(url) {
-            if (confirm('Yakin ingin menghapus data ini?')) {
-                $.post(url, {
-                    '_token': $('[name=csrf-token]').attr('content'),
-                    '_method': 'post'
-                }).done(function(response) {
-                    table.ajax.reload();
-                    alert(response.message);
-                }).fail(function(errors) {
-                    alert('Tidak dapat menghapus data');
-                    if (errors.responseJSON && errors.responseJSON.message) {
-                        alert(errors.responseJSON.message);
-                    }
-                });
-            }
+            Swal.fire({
+                title: 'Yakin?',
+                text: "Tidak dapat mengembalikan data yang telah dihapus!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.post(url, {
+                        '_token': $('[name=csrf-token]').attr('content'),
+                        '_method': 'post'
+                    }).done(function(response) {
+                        table.ajax.reload();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.message,
+                        });
+                    }).fail(function(errors) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Tidak dapat menghapus data',
+                        });
+                        if (errors.responseJSON && errors.responseJSON.message) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: errors.responseJSON.message,
+                            });
+                        }
+                    });
+                }
+            });
         };
 
         // Function to handle modal editing
@@ -157,7 +185,11 @@ Data Presensi
                 $('#waktu_keluar').val(data.waktu_keluar);
                 $('#editModal').modal('show');
             }).fail(function() {
-                alert('Tidak dapat mengambil data');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'Tidak dapat mengambil data',
+                });
             });
         };
 
@@ -186,9 +218,17 @@ Data Presensi
             }
             loadDataTable(filterParams);
         }).fail(function(errors) {
-            alert('Tidak dapat memfilter data');
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: 'Tidak dapat memfilter data',
+            });
             if (errors.responseJSON && errors.responseJSON.message) {
-                alert(errors.responseJSON.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: errors.responseJSON.message,
+                });
             }
         });
 
