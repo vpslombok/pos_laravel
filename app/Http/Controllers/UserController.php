@@ -147,7 +147,7 @@ class UserController extends Controller
             $file->move('/img', $nama);
             // Hapus foto sebelumnya jika ada
             if ($user->foto != '/img/user.jpg') {
-                $path = public_path($user->foto);
+                $path = $user->foto;
                 if (file_exists($path)) {
                     unlink($path);
                 }
