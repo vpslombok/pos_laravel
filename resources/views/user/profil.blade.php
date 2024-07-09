@@ -103,9 +103,9 @@
                 })
                 .fail(errors => {
                     if (errors.status == 422) {
-                        alert(errors.responseJSON); 
+                        alert(JSON.stringify(errors.responseJSON.errors)); 
                     } else {
-                        alert('Tidak dapat menyimpan data');
+                        alert($errors);
                     }
                     return;
                 });
